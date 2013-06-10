@@ -24,6 +24,13 @@
  */
 
 #include "copyshareuimethod.h"
+#include <ShareUI/ItemContainer>
+#include <ShareUI/FileItem>
+#include <ShareUI/DataUriItem>
+#include <MDataUri>
+#include <QClipboard>
+#include <QApplication>
+#include <QTimer>
 
 CopyShareUIMethod::CopyShareUIMethod(QObject *parent)
   : ShareUI::MethodBase(parent) {
@@ -61,7 +68,19 @@ void CopyShareUIMethod::currentItems(const ShareUI::ItemContainer * items)
 
 void CopyShareUIMethod::selected(const ShareUI::ItemContainer * items)
 {
-    Q_UNUSED(items);
-    // TODO: Copy path to clipboard
-    emit done(); // declared in ShareUI::MethodBase
+    QString path("");
+    if (items->count() == 1) { // can handle only one shared item
+        ShareUI::SharedItem item = items->getItem(0);
+        ShareUI::FileItem *fileItem = ShareUI::FileItem::toFileItem(item);
+        ShareUI::DataUriItem *dataUriItem = ShareUI::DataUriItem::toDataUriItem(item);
+        if (fileItem) { // it's a file
+            path = fileItem->filePath();
+        } else if (dataUriItem) { // it's a URL
+            path = dataUriItem->dataUri().textData();
+        }
+    }
+    QApplication::clipboard()->setText(path);
+    // Give some time for the setText() call to talk to the X Server
+    // and then emit done() to quit the share-ui app
+    QTimer::singleShot(500, this, SIGNAL(done()));
 }
