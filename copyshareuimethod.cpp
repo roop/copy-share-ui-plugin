@@ -62,8 +62,9 @@ QString CopyShareUIMethod::icon()
 
 void CopyShareUIMethod::currentItems(const ShareUI::ItemContainer * items)
 {
-    Q_UNUSED(items);
-    emit visible(true); // declared in ShareUI::MethodBase
+    // This sharing method is valid only if
+    // there's just one item to share
+    emit visible(items->count() == 1);
 }
 
 void CopyShareUIMethod::selected(const ShareUI::ItemContainer * items)
