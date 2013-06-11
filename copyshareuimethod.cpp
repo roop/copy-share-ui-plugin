@@ -57,7 +57,7 @@ QString CopyShareUIMethod::subtitle()
 
 QString CopyShareUIMethod::icon()
 {
-    return "icon-m-content-document";
+    return "/usr/share/icons/hicolor/64x64/apps/copy-shareui-qtlogo64.png";
 }
 
 void CopyShareUIMethod::currentItems(const ShareUI::ItemContainer * items)
