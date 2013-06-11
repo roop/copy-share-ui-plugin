@@ -43,6 +43,9 @@ public:
 public slots:
     void currentItems(const ShareUI::ItemContainer *items);
     void selected(const ShareUI::ItemContainer *items);
+
+private:
+    bool m_isPixmapDirAdded;
 };
 
 #endif // COPYSHAREUIMETHOD_H

@@ -14,3 +14,5 @@ INSTALLS += target
 icon.path = /usr/share/icons/hicolor/64x64/apps/
 icon.files = copy-shareui-qtlogo64.png
 INSTALLS += icon
+
+CONFIG += meegotouch

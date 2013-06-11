@@ -28,12 +28,13 @@
 #include <ShareUI/FileItem>
 #include <ShareUI/DataUriItem>
 #include <MDataUri>
+#include <MTheme>
 #include <QClipboard>
 #include <QApplication>
 #include <QTimer>
 
 CopyShareUIMethod::CopyShareUIMethod(QObject *parent)
-  : ShareUI::MethodBase(parent) {
+    : ShareUI::MethodBase(parent), m_isPixmapDirAdded(false) {
 }
 
 CopyShareUIMethod::~CopyShareUIMethod()
@@ -57,7 +58,12 @@ QString CopyShareUIMethod::subtitle()
 
 QString CopyShareUIMethod::icon()
 {
-    return "/usr/share/icons/hicolor/64x64/apps/copy-shareui-qtlogo64.png";
+    if (!m_isPixmapDirAdded) { // need to add it just once
+        QString shareIconPath = "/usr/share/icons/hicolor/64x64/apps";
+        MTheme::addPixmapDirectory(shareIconPath);
+        m_isPixmapDirAdded = true;
+    }
+    return "copy-shareui-qtlogo64";
 }
 
 void CopyShareUIMethod::currentItems(const ShareUI::ItemContainer * items)
